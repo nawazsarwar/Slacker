@@ -1,0 +1,68 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateSlackerTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $connection = config('slacker.database.connection');
+        $tableNames = config('slacker.database.tables'); // array
+
+        if (empty($tableNames)) {
+            throw new \Exception('Error: config/slacker.php not loaded. Run [php artisan config:clear] and try again.');
+        }
+
+        Schema::connection($connection)->create($tableNames['channels'], function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('type');
+            $table->unsignedBigInteger('owner_id');
+            $table->timestamps();
+            $table->unique(['name']);
+        });
+        Schema::connection($connection)->create($tableNames['channel_user'], function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('channel_id');
+            $table->string('role');
+            $table->timestamps();
+        });
+        Schema::connection($connection)->create($tableNames['messages'], function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('owner_id')->comment("Sender User ID");+
+            $table->unsignedBigInteger('reply_message_id')->nullable();
+            $table->unsignedBigInteger('channel_id');
+            $table->text('content');
+            $table->string('type');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $connection = config('slacker.database.connection');
+        $tableNames = config('slacker.database.tables'); // array
+
+        if (empty($tableNames)) {
+            throw new \Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
+        }
+
+        Schema::connection($connection)->drop($tableNames['channels']);
+        Schema::connection($connection)->drop($tableNames['channel_user']);
+        Schema::connection($connection)->drop($tableNames['messages']);
+
+    }
+}

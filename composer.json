@@ -22,6 +22,6 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {"myPHPnotes\\": "src/"}
+        "psr-4": {"myPHPnotes\\Slacker\\": "src/"}
     }
 }
