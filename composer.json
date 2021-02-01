@@ -23,5 +23,12 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {"myPHPnotes\\Slacker\\": "src/"}
+    }, 
+    "extra": {
+        "laravel": {
+            "providers": [
+                "myPHPnotes\\Slacker\\SlackerServiceProvider"
+            ]
+        }
     }
 }
