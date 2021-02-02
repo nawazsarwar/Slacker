@@ -13,7 +13,7 @@ use Illuminate\View\Compilers\BladeCompiler;
  */
 class SlackerServiceProvider extends ServiceProvider
 {
-    
+
     public function boot(Filesystem $filesystem)
     {
         if (function_exists('config_path')) { // function not available and 'publish' not relevant in Lumen
@@ -25,10 +25,11 @@ class SlackerServiceProvider extends ServiceProvider
                 __DIR__.'/../database/migrations/create_slacker_tables.php.stub' => $this->getMigrationFileName($filesystem, 'create_slacker_tables.php'),
             ], 'migrations');
         }
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'slacker');
     }
     public function register()
     {
-        
+
     }
     protected function getMigrationFileName(Filesystem $filesystem, $migrationFileName): string
     {

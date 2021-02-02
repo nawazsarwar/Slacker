@@ -37,11 +37,20 @@ class CreateSlackerTables extends Migration
         });
         Schema::connection($connection)->create($tableNames['messages'], function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('owner_id')->comment("Sender User ID");+
+            $table->unsignedBigInteger('owner_id')->comment("Sender User ID");
             $table->unsignedBigInteger('reply_message_id')->nullable();
             $table->unsignedBigInteger('channel_id');
             $table->text('content');
             $table->string('type');
+            $table->timestamps();
+        });
+        Schema::connection($connection)->create($tableNames['webhooks'], function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('type');
+            $table->unsignedBigInteger('owner_id')->comment("Sender User ID");
+            $table->unsignedBigInteger('channel_id');
+            $table->string('identifier');
             $table->timestamps();
         });
     }
@@ -63,6 +72,7 @@ class CreateSlackerTables extends Migration
         Schema::connection($connection)->drop($tableNames['channels']);
         Schema::connection($connection)->drop($tableNames['channel_user']);
         Schema::connection($connection)->drop($tableNames['messages']);
+        Schema::connection($connection)->drop($tableNames['webhooks']);
 
     }
 }

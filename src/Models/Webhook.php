@@ -6,14 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use myPHPnotes\Slacker\Models\Message;
 
-class Channel extends Model {
-    protected $guarded = ['id'];
-
+class Webhook extends Model {
+    protected $guarded = ['id', 'identifier'];
+    public function getRouteKeyName()
+    {
+        return 'identifier';
+    }
     protected static function boot()
     {
         parent::boot();
-        Channel::creating(function($model) {
+        Webhook::creating(function($model) {
             $model->owner_id = auth()->user()->id;
+            $model->identifier = md5(random_bytes(15));
         });
     }
     public function getConnection()
@@ -23,7 +27,7 @@ class Channel extends Model {
     }
     public function getTable()
     {
-        parent::setTable(config('slacker.database.tables.channels', parent::getTable()));
+        parent::setTable(config('slacker.database.tables.webhooks', parent::getTable()));
         return parent::getTable();
     }
     public function scopeMine(Builder $builder)
@@ -34,17 +38,13 @@ class Channel extends Model {
     {
         return $this->belongsTo(config('slacker.models.User'));
     }
-    public function users()
+    public function channel()
     {
-        return $this->belongsToMany(config('slacker.models.User'), "channel_user","channel_id" ,"user_id");
+        return $this->belongsTo(Channel::class);
     }
-    public function messages()
+    public function url()
     {
-        return $this->hasMany(Message::class);
-    }
-    public function webhooks()
-    {
-        return $this->hasMany(Webhook::class);
+        return route("slacker.channel.webhook.listen", ['webhook' => $this]);
     }
     public function isMine()
     {

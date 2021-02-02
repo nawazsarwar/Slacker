@@ -3,15 +3,16 @@
 return [
     "database" => [
         'connection' => "mysql",
-        'tables' = [
+        'tables' => [
             'channels' => "channels",
             'channel_user' => "channel_user",
-            'messages' => "messages"
+            'messages' => "messages",
+            'webhooks' => "webhooks"
         ]
     ],
     "models" => [
         "User" => App\Models\User::class
     ]
-        
+
 
 ];
