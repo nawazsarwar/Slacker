@@ -9,7 +9,7 @@ use myPHPnotes\Slacker\Controllers\Channels\ChannelsController;
 use myPHPnotes\Slacker\Controllers\Messages\MessagesController;
 use myPHPnotes\Slacker\Controllers\Webhooks\WebhooksController;
 
-class SlackRoute {
+class SlackRoute extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken {
 
     public static function routes($prefix = "slacker")
     {
@@ -28,4 +28,5 @@ class SlackRoute {
 
         Route::post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
     }
+
 }

@@ -7,6 +7,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
+use myPHPnotes\Slacker\Middlewares\VerifyCsrfToken;
 
 /**
  *  Slacker Service Provider
@@ -26,6 +27,8 @@ class SlackerServiceProvider extends ServiceProvider
             ], 'migrations');
         }
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'slacker');
+        $csrf = new VerifyCsrfToken;
+        $csrf->addToExcept("/slacker/*/webhook");
     }
     public function register()
     {
