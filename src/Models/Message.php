@@ -11,13 +11,16 @@ class Message extends Model {
         'channel_id',
         'content',
         'type',
+        'owner_id'
     ];
     protected static function boot()
     {
         parent::boot();
-        Message::creating(function($model) {
-            $model->owner_id = auth()->user()->id;
-        });
+        if (auth()->user()) {
+            Message::creating(function($model) {
+                $model->owner_id = auth()->user()->id;
+            });
+        }
     }
     public function getConnection()
     {

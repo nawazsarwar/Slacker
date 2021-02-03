@@ -50,7 +50,8 @@ class WebhooksController extends Controller
         $message = Message::create([
             'channel_id' => $webhook->channel->id,
             'content' => json_encode($request->all()),
-            'type' => $webhook->channel->type
+            'type' => $webhook->channel->type,
+            'owner_id' => $webhook->owner_id
         ]);
         die("LISTENED");
     }
