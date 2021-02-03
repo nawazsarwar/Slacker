@@ -9,8 +9,13 @@ use myPHPnotes\Slacker\Controllers\Channels\ChannelsController;
 use myPHPnotes\Slacker\Controllers\Messages\MessagesController;
 use myPHPnotes\Slacker\Controllers\Webhooks\WebhooksController;
 
-class SlackRoute extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken {
+class SlackRoute  {
 
+    protected $router;
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
     public static function routes($prefix = "slacker")
     {
         Route::get($prefix . '/dashboard', [DashboardController::class, 'index'])->name('slacker.dashboard');
@@ -26,7 +31,9 @@ class SlackRoute extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
 
         Route::get($prefix . '/channel/{webhook}/webhook/delete', [WebhooksController::class, 'delete'])->name('slacker.channel.webhook.delete');
 
-        Route::post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
+        $this->router->group(['middleware' => ['web'], function ($router) {
+            $router->post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
+        }
     }
 
 }
