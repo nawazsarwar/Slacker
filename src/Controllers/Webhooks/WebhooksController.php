@@ -53,7 +53,7 @@ class WebhooksController extends Controller
             'type' => $webhook->channel->type,
             'owner_id' => $webhook->owner_id
         ]);
-        die("LISTENED");
+        abort(200);
     }
 
 
