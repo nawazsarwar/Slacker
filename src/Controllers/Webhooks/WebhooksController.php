@@ -13,7 +13,6 @@ use myPHPnotes\Slacker\Views\View;
 
 class WebhooksController extends Controller
 {
-
     public function create(Channel $channel)
     {
         if (!$channel->isMine()) {

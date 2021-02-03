@@ -26,10 +26,10 @@ class SlackRoute  {
         Route::get($prefix . '/messages/{channel}/show', [MessagesController::class, 'display'])->name('slacker.channel.display');
         Route::post($prefix . '/messages/{channel}/store', [MessagesController::class, 'store'])->name('slacker.message.store');
 
-        Route::get($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'create'])->name('slacker.channel.webhook.create');
-        Route::post($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'store'])->name('slacker.channel.webhook.store');
+        Route::get($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'create'])->name('slacker.channel.webhook.create')->middleware("auth");
+        Route::post($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'store'])->name('slacker.channel.webhook.store')->middleware("auth");
 
-        Route::get($prefix . '/channel/{webhook}/webhook/delete', [WebhooksController::class, 'delete'])->name('slacker.channel.webhook.delete');
+        Route::get($prefix . '/channel/{webhook}/webhook/delete', [WebhooksController::class, 'delete'])->name('slacker.channel.webhook.delete')->middleware("auth");
         Route::post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
     }
 

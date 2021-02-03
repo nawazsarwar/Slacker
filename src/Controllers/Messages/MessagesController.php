@@ -10,6 +10,10 @@ use myPHPnotes\Slacker\Models\Message;
 
 class MessagesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
     public function display(Request $request, Channel $channel)
     {
         $channel = Channel::where("owner_id", auth()->user()->id)->find($channel->id);

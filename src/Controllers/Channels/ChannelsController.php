@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class ChannelsController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
     public function create()
     {
         return view(View::path('channels.create'));
