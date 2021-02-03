@@ -3,11 +3,13 @@
 namespace myPHPnotes\Slacker\Controllers\Webhooks;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use myPHPnotes\Slacker\Models\Channel;
 use myPHPnotes\Slacker\Models\Listen;
-use myPHPnotes\Slacker\Views\View;
-use Illuminate\Http\Request;
+use myPHPnotes\Slacker\Models\Message;
 use myPHPnotes\Slacker\Models\Webhook;
+use myPHPnotes\Slacker\Views\View;
 
 class WebhooksController extends Controller
 {
@@ -50,10 +52,7 @@ class WebhooksController extends Controller
             'content' => json_encode($request->all()),
             'type' => $webhook->channel->type
         ]);
-        if ($message) {
-            return abort(200);
-        }
-        return abort(500);
+        die("LISTENED");
     }
 
 

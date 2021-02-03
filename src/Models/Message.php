@@ -7,6 +7,11 @@ use myPHPnotes\Slacker\Models\Channel;
 
 class Message extends Model {
     protected $guarded = ['id'];
+    protected $fillable = [
+        'channel_id',
+        'content',
+        'type',
+    ];
     protected static function boot()
     {
         parent::boot();
