@@ -30,10 +30,7 @@ class SlackRoute  {
         Route::post($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'store'])->name('slacker.channel.webhook.store');
 
         Route::get($prefix . '/channel/{webhook}/webhook/delete', [WebhooksController::class, 'delete'])->name('slacker.channel.webhook.delete');
-
-        $this->router->group(['middleware' => ['web'], function ($router) {
-            $router->post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
-        }
+        Route::post($prefix . '/{webhook}/webhook', [WebhooksController::class, 'listen'])->name('slacker.channel.webhook.listen');
     }
 
 }
