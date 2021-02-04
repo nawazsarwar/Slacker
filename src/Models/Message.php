@@ -55,4 +55,29 @@ class Message extends Model {
         }
         return false;
     }
+    public function getMessageObject()
+    {
+        return (json_decode($this->content, true));
+    }
+    public function getSlackUsername()
+    {
+        return $this->getMessageObject()['username'];
+    }
+    public function getSlackTitle()
+    {
+        return $this->getMessageObject()['attachments'][0]['title'] . ": ". $this->getMessageObject()['attachments'][0]['text'];
+    }
+    public function getSlackTitleColor()
+    {
+        $color = $this->getMessageObject()['attachments'][0]['color'] ;
+        switch ($color) {
+            case 'danger':
+                return "#c00";
+                break;
+            
+            default:
+                return "#167ac6";
+                break;
+        }
+    }
 }
