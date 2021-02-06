@@ -39,4 +39,16 @@ class MessagesController extends Controller
         ]);
         return redirect()->route('slacker.channel.display', compact('channel'));
     }
+    public function get(Channel $channel, Request $request)
+    {
+        $channel = Channel::where("owner_id", auth()->user()->id)->find($channel->id);
+        if(!$channel) {
+            abort(404);
+        }
+        $message = Message::where("owner_id", auth()->user()->id)->find($request->message_id);
+        if(!$message) {
+            abort(404);
+        }
+        return $message->getModalContent();
+    }
 }

@@ -21,10 +21,12 @@ class SlackRoute  {
         Route::get($prefix . '/dashboard', [DashboardController::class, 'index'])->name('slacker.dashboard');
 
         Route::get($prefix . '/channel/create', [ChannelsController::class, 'create'])->name('slacker.channel.create');
+        Route::get($prefix . '/channel/{channel}/truncate', [ChannelsController::class, 'truncate'])->name('slacker.channel.truncate');
         Route::post($prefix . '/channel/store', [ChannelsController::class, 'store'])->name('slacker.channel.store');
 
         Route::get($prefix . '/messages/{channel}/show', [MessagesController::class, 'display'])->name('slacker.channel.display');
         Route::post($prefix . '/messages/{channel}/store', [MessagesController::class, 'store'])->name('slacker.message.store');
+        Route::get($prefix . '/messages/{channel}/get', [MessagesController::class, 'get'])->name('slacker.message.get');
 
         Route::get($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'create'])->name('slacker.channel.webhook.create')->middleware("auth");
         Route::post($prefix . '/channel/{channel}/webhook/create', [WebhooksController::class, 'store'])->name('slacker.channel.webhook.store')->middleware("auth");

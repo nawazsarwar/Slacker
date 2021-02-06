@@ -33,6 +33,15 @@ class ChannelsController extends Controller
 
         return redirect()->route('slacker.dashboard')->withSuccess('Channel ' . $request->name . ' created successfully');
     }
+    public function truncate(Channel $channel)
+    {
+        $channel = Channel::where("owner_id", auth()->user()->id)->find($channel->id);
+        if(!$channel) {
+            abort(404);
+        }
+        $channel->messages()->truncate();
+        return redirect(route("slacker.channel.display", ['channel' => $channel]))->withSuccess("Channel truncated.");
+    }
 
 
 }
