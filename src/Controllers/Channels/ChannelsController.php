@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use myPHPnotes\Slacker\Models\Channel;
 use myPHPnotes\Slacker\Views\View;
 use Illuminate\Http\Request;
+use myPHPnotes\Slacker\Models\Message;
 
 class ChannelsController extends Controller
 {
@@ -39,7 +40,7 @@ class ChannelsController extends Controller
         if(!$channel) {
             abort(404);
         }
-        $channel->messages()->truncate();
+        Message::where("channel_id", $channel->id)->delete();
         return redirect(route("slacker.channel.display", ['channel' => $channel]))->withSuccess("Channel truncated.");
     }
 
